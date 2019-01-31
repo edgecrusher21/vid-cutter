@@ -12,7 +12,11 @@ elif [ -z $( echo $INFILE | grep "watch?v=") ]; then
 fi
 ##Example ffmpeg command
 if [ -f $OUTFILE ]; then
-   rm -rf out.mp3
-   echo "out.mp3 found and has been deleted"
+   rm -rf $OUTFILE
+   echo "$OUTFILE found and has been deleted"
 fi
-youtube-dl -f251 $INFILE -o - | ffmpeg -i pipe: -strict -2 $OUTFILE
+##One liner
+#youtube-dl -f251 $INFILE -o - | ffmpeg -i pipe: -strict -2 $OUTFILE
+VIDEO=$(youtube-dl -f251 $INFILE -o "%(format_id)s.%(ext)s" | grep "Destination:" | awk '{ print substr($0, index($0,$3)) }')
+echo "OUTPUT FOR \$VIDEO: $VIDEO"
+ffmpeg -i $VIDEO -vn -ar 44100 -ac 2 -ab 192k -f mp3 $OUTFILE
