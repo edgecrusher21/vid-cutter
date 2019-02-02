@@ -19,4 +19,13 @@ fi
 #youtube-dl -f251 $INFILE -o - | ffmpeg -i pipe: -strict -2 $OUTFILE
 VIDEO=$(youtube-dl -f251 $INFILE -o "%(format_id)s.%(ext)s" | grep "Destination:" | awk '{ print substr($0, index($0,$3)) }')
 echo "OUTPUT FOR \$VIDEO: $VIDEO"
+##Command for convert video to mp3
 ffmpeg -i $VIDEO -vn -ar 44100 -ac 2 -ab 192k -f mp3 $OUTFILE
+
+ARTIST_NAME="ARTIST"
+ALBUM_NAME="ALBUM"
+YEAR="9999"
+
+csvFile=()
+#while IFS=',' read -r _ second _; do
+#    csvFile +=()
