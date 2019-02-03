@@ -1,31 +1,13 @@
 #include <iostream>
 #include <unistd.h>
+#include <regex>
 #include <cstdio>
 #include <memory>
 #include <string>
 #include <array>
 
-//Exception for throwing when dependencies are not met
-struct DependencyException : public std::exception {
-  const char* dep;
-  DependencyException (const char* dep_) : dep(dep_)
-  {
-    std::cout << "WARNING: Crucial dependency not found. Please resolve the following dependencies:" << std::endl;
-  }
-  const char * what () const throw () {
-    return dep;
-  }
-};
-
-struct FileNotFoundException : public std::exception {
-  const char* _msg;
-  FileNotFoundException (const char* msg) : _msg(msg) {}
-
-  virtual const char* what() const noexcept override{
-    return _msg;
-  }
-
-};
+#include "Exceptions.cpp"
+//Constants
 
 //Once working with FFmpeg, switch over to GStreamer
 bool checkDeps(const char prog[]){
@@ -41,7 +23,6 @@ bool checkDeps(const char prog[]){
     return true;
   }
 }
-
 
 int main(int arg, const char* argv[]) {
   printf("Starting vid cutter \n");
@@ -66,14 +47,20 @@ int main(int arg, const char* argv[]) {
       //Now lets check files
     }
 
-    if(argv[1] == NULL){
-      throw FileNotFoundException("Please enter in a valid file");
-    }
+    if(argv[2] == NULL)
+      throw ArgException("Please enter in a valid file");
+    
+    std::regex rx ("^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$");
+
+    if(argv[1] == NULL)
+      throw ArgException("Please enter in a valid youtube URL");
+    else if(!std::regex_match(argv[1], rx))
+      throw ArgException("URL entered is not a valid url");
 
   }catch(DependencyException& e){
     std::cout << e.what() << std::endl;
-  }catch(FileNotFoundException& e){
-    std::cout << "FILE ERROR: " << e.what() << std::endl;
+  }catch(ArgException& e){
+    std::cout << "ARG ERROR: " << e.what() << std::endl;
   }catch(std::exception& e){
     std::cout << "Something went wrong. Please contact maintainer" << std::endl;
     std::cout << e.what() << std::endl;
