@@ -17,6 +17,16 @@ struct DependencyException : public std::exception {
   }
 };
 
+struct FileNotFoundException : public std::exception {
+  const char* _msg;
+  FileNotFoundException (const char* msg) : _msg(msg) {}
+
+  virtual const char* what() const noexcept override{
+    return _msg;
+  }
+
+};
+
 //Once working with FFmpeg, switch over to GStreamer
 bool checkDeps(const char prog[]){
   //std::ifstream infile(ffmpegLocation.c_str());
@@ -24,7 +34,7 @@ bool checkDeps(const char prog[]){
   std::string command = "which ";
   command.append(prog);
   command.append(" > /dev/null 2>&1");
-  std::cout << command << std::endl;
+  //std::cout << command << std::endl;
   if(!system(command.c_str())){
     return false;
   }else{
@@ -52,15 +62,26 @@ int main(int arg, const char* argv[]) {
     case 3 :
       throw DependencyException("ffmpeg, youtube-dl");
       break;
+
+      //Now lets check files
     }
+
+    if(argv[1] == NULL){
+      throw FileNotFoundException("Please enter in a valid file");
+    }
+
   }catch(DependencyException& e){
+    std::cout << e.what() << std::endl;
+  }catch(FileNotFoundException& e){
+    std::cout << "FILE ERROR: " << e.what() << std::endl;
+  }catch(std::exception& e){
+    std::cout << "Something went wrong. Please contact maintainer" << std::endl;
     std::cout << e.what() << std::endl;
   }
 
 
-  if(argv == NULL){
-    std::cout << "Please enter in a valid file" << std::endl;
-  }
+  
   return 0;
 }
 
+ 
