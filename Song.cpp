@@ -3,11 +3,12 @@
 
 class Song : public Splice{
 public:
-  Song(int sn ) : sn(songName);
+  Song(const char * sn, int t, double st, double et) : Splice(t, st, et), songName(sn)  {};
 private:
   const char * songName;
-
+  const char * getSongName();
+  void setSongName(const char *);
    
 };
-const char * Song::getSongName(){return songName};
-void Song::setSongName(const char * sn){songName = sn};
+const char * Song::getSongName(){return songName;};
+void Song::setSongName(const char * sn){songName = sn;};
