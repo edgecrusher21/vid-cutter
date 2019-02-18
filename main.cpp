@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <array>
+#include <sys/stat.h>
 
 #include "Exceptions.cpp"
 //Constants
@@ -47,8 +48,21 @@ bool checkDeps(const char prog[]){
 }
 
 const char* downloadVideo(const char* url, const char* format){
-  std::regex rx("(download)(Destination)");
-  // std::string ;
+  //Extracting youtube-id from URL
+  //TODO: Allow proccessing for youtu.be URLs
+  std::string id(url);
+  id = id.substr((id.find_first_of("?v=") + 3), id.length());
+  std::cout << "ID: " << id.c_str() << std::endl;
+
+  //Generate file name
+  std::string fileName(id.c_str());
+  fileName.append(".");
+  fileName.append(format);
+
+  //Check to see if file exists
+  struct stat buffer;
+  if(stat(fileName.c_str(), &buffer) ==0)
+    return fileName.c_str();
   //Youtube-dl command
   std::string command = "youtube-dl -f ";
   command.append(format);
@@ -61,10 +75,9 @@ const char* downloadVideo(const char* url, const char* format){
 
   std::string ytdlOutput = GetStdoutFromCommand(command);
   std::cout << ytdlOutput << std::endl;
-  std::cout << std::regex_match(ytdlOutput, rx)<< std::endl;
-  if(std::regex_match(ytdlOutput, rx)){
+  if(ytdlOutput.find("[download] Destination:") != std::string::npos){
     std:: cout << "Download finished" << std::endl;
-    return "Success";
+    return fileName.c_str();
   }else{
     return "Failed";
   }
@@ -96,19 +109,23 @@ int main(int arg, const char* argv[]) {
     if(argv[2] == NULL)
       throw ArgException("Please enter in a valid file");
     
-    std::regex rx ("^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$");
+    std::regex rx (".*\\..*");
 
     if(argv[1] == NULL)
       throw ArgException("Please enter in a valid youtube URL");
-    else if(std::regex_match(argv[1], rx))
+    else if(!std::regex_match(argv[1], rx))
       throw ArgException("URL entered is not a valid url");
 
     //for now, we'll just use webm for convenience sakes
-    std::cout << downloadVideo(argv[1], "webm") << std::endl;
+    const char *videoFile = downloadVideo(argv[1], "webm");
+    std::cout << videoFile << std::endl;
+
+    //Now creating album object to store csv file data
+
   }catch(DependencyException& e){
     std::cout << e.what() << std::endl;
   }catch(ArgException& e){
-    std::cout << "ARG ERROR: " << e.what() << std::endl;
+    std::cout << " ERROR IN ARGUMENTS: " << e.what() << std::endl;
   }catch(std::exception& e){
     std::cout << "Something went wrong. Please contact maintainer" << std::endl;
     std::cout << e.what() << std::endl;

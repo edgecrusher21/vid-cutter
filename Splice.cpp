@@ -3,41 +3,16 @@
 class Splice {
 
 public:
-  Splice(int t, double st, double et) : track(t), startTime(st),
+  Splice(int t, const std::string& st, const std::string& et) : track(t), startTime(st),
                                         endTime(et) {};
+  int getTrack() {return track;}
+  void setTrack(int t){ track = t;}
+  const std::string getStartTime(){return startTime;}
+  void setStartTime(const std::string& st){startTime = st;}
+  const std::string getEndTime(){return endTime;}
+  void setEndTime(const std::string& et){endTime = et;}
 private:
   int track;
-  double startTime;
-  double endTime;
-  int getTrack();
-  void setTrack(int t);
-  double getStartTime();
-  void setStartTime(int st);
-  double getEndTime();
-  void setEndTime(int et);
+  std::string startTime;
+  std::string endTime;
 };
-
-
-int Splice::getTrack(){
-  return track;
-}
-
-void Splice::setTrack(int t){
-  track = t;
-}
-
-double Splice::getStartTime(){
-  return startTime;
-}
-
-void Splice::setStartTime(int st){
-  startTime = st;
-}
-
-double Splice::getEndTime(){
-  return endTime;
-}
-
-void Splice::setEndTime(int et){
-  endTime = et;
-}
