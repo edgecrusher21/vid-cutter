@@ -1,0 +1,16 @@
+#+TITLE: vid-cutter
+* Work in progress
+  This is a work in progress and one of my first major project. There are a few gaping bugs I am fully aware of
+* About
+  vid-cutter is a simple tool which converts mp4 files ripped from youtube videos and cuts them up into mp3 files with metadata added. Metadata is extracted from a simple csv file and added to a corresponding mp3 file encoded by ffmpeg. This is a personal project which I use for rare EPs, LPs and concerts I find on youtube. I plan on expanding this for other forms of media, such as TV/Video scenes, podcast/livestream clips and individual PPV fights.
+* CSV File Template
+  song_name[0], start_time[0], end_time[0]
+  song_name[1], start_time[1], end_time[1]
+  song_name[2], start_time[2], end_time[2]
+  _ARTIST_NAME, artist_name
+  _ALBUM_NAME, album_name
+  _YEAR, year
+
+  All values starting with _ _LIKE_THIS must be in the first column of the row, otherwise you may have issues with corresponding metadata being added.
+* Licence
+  WTFPL for now
