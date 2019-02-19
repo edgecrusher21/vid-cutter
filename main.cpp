@@ -126,7 +126,7 @@ int main(int arg, const char* argv[]) {
     std::cout << "Now parsing file: " << argv[2] << std::endl;
     Album* album = csvToString(argv[2]);
 
-
+    //typical y/n prompt, make sure a clear answer is given
     char response = 'g';
     while(response != 'y' || response !='n'){
       std::cout << "Is this data correct?[y/n]" << std::endl;
