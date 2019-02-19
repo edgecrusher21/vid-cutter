@@ -8,7 +8,7 @@
 #include "Album.cpp"
 
 //TODO: Change from void to return Album object
-void csvToString(const char* fileName){
+Album* csvToString(const char* fileName){
 
   std::string albumName = "album_name";
   std::string artistName = "artist_name";
@@ -28,19 +28,19 @@ void csvToString(const char* fileName){
         while(std::getline(iss, albumName, ','))
           iss >> albumName;
         album->setAlbumName(albumName);
-        std::cout << "Album Name: " << albumName << std::endl;
+        //std::cout << "Album Name: " << albumName << std::endl;
       }else if(value.compare("_ARTIST_NAME") == 0){
         while(std::getline(iss, artistName, ','))
           iss >> artistName;
         album->setArtistName(artistName);
-        std::cout << "Artist Name: " << artistName << std::endl;
+        //std::cout << "Artist Name: " << artistName << std::endl;
         
       }else if(value.compare("_YEAR") == 0){
         
         while(std::getline(iss, year, ','))
           iss >> year;
         album->setYear(year);
-        std::cout << "Year: " << year << std::endl;
+        //std::cout << "Year: " << year << std::endl;
         
       }else{
         std::string songName = "SongName"; 
@@ -53,8 +53,8 @@ void csvToString(const char* fileName){
             iss >> endTime; 
         }
 
-        std::cout << "Song Name: " << songName << " Start Time: " << startTime << " End Time: " << endTime
-                  << std::endl;
+        //std::cout << "Song Name: " << songName << " Start Time: " << startTime << " End Time: " << endTime
+        //           << std::endl;
         
         Song* song = new Song(songName, track, startTime, endTime);
         album->addTrack(song);
@@ -64,11 +64,12 @@ void csvToString(const char* fileName){
 
   std::cout << "Now Testing to see if object was successfully filled with data" << std::endl;
   album->listTrack();
+  return album;
 }
 
-int main(int arg, const char* argv[]){
-  std::cout << "Parsing test" << std::endl;
-  csvToString("test.csv");
-  return 0;
+// int main(int arg, const char* argv[]){
+//   std::cout << "Parsing test" << std::endl;
+//   csvToString("test.csv");
+//   return 0;
   
-}
+// }

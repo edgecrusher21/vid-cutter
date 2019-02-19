@@ -14,15 +14,15 @@ public:
   void setYear(const std::string& y){year = y;}
 
   bool addTrack(Song* song);
+  Song* getTrack();
   void listTrack();
+  bool isTrackListEmpty();
 
 private:
   std::string albumName;
   std::string artistName;
   std::string year; //Store year as ($YEAR)
   std::queue<Song*> trackList;
-
-
 
 };
 
@@ -32,8 +32,17 @@ bool Album::addTrack(Song* song){
   return true;
 }
 
+Song* Album::getTrack(){
+  Song* song = trackList.front();
+  trackList.pop();
+  return song;
+
+}
+
 //Useful for debugging purposes
 void Album::listTrack(){
+  //Create a copy of the queue
+  std::queue<Song*> trackList = this->trackList;
   std::cout << "Now in class listing tracks" << std::endl;
   std::cout << "Album Name: " << albumName << std::endl;
   std::cout << "Artist Name: " << artistName << std::endl;
@@ -47,4 +56,8 @@ void Album::listTrack(){
 
     trackList.pop();
   }
+
 }
+bool Album::isTrackListEmpty(){
+  return trackList.empty();
+  }

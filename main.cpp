@@ -7,6 +7,8 @@
 #include <array>
 #include <sys/stat.h>
 
+#include "CsvParse.cpp"
+#include "FFmpegParse.cpp"
 #include "Exceptions.cpp"
 //Constants
 
@@ -47,7 +49,7 @@ bool checkDeps(const char prog[]){
   }
 }
 
-const char* downloadVideo(const char* url, const char* format){
+std::string downloadVideo(const char* url, const char* format){
   //Extracting youtube-id from URL
   //TODO: Allow proccessing for youtu.be URLs
   std::string id(url);
@@ -62,7 +64,7 @@ const char* downloadVideo(const char* url, const char* format){
   //Check to see if file exists
   struct stat buffer;
   if(stat(fileName.c_str(), &buffer) ==0)
-    return fileName.c_str();
+    return fileName;
   //Youtube-dl command
   std::string command = "youtube-dl -f ";
   command.append(format);
@@ -77,7 +79,7 @@ const char* downloadVideo(const char* url, const char* format){
   std::cout << ytdlOutput << std::endl;
   if(ytdlOutput.find("[download] Destination:") != std::string::npos){
     std:: cout << "Download finished" << std::endl;
-    return fileName.c_str();
+    return fileName;
   }else{
     return "Failed";
   }
@@ -117,12 +119,26 @@ int main(int arg, const char* argv[]) {
       throw ArgException("URL entered is not a valid url");
 
     //for now, we'll just use webm for convenience sakes
-    const char *videoFile = downloadVideo(argv[1], "webm");
+    std::string videoFile = downloadVideo(argv[1], "mp4");
     std::cout << videoFile << std::endl;
 
     //Now creating album object to store csv file data
+    std::cout << "Now parsing file: " << argv[2] << std::endl;
+    Album* album = csvToString(argv[2]);
 
-  }catch(DependencyException& e){
+    char response;
+    std::cout << "Is this data correct?[y/n]" << std::endl;
+    std::cin >> response;
+    if(response=='y'){
+      std::cout << "OK" << std::endl;
+      //Now convert files to MP3
+      toMp3(album, videoFile.c_str());
+
+    }else if(response=='n'){
+      std::cout << "Fix any issues with the CSV file or contact maintainer if you believe something went wrong" << std::endl;
+      return 0;
+    }
+     }catch(DependencyException& e){
     std::cout << e.what() << std::endl;
   }catch(ArgException& e){
     std::cout << " ERROR IN ARGUMENTS: " << e.what() << std::endl;
