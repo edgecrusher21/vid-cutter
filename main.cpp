@@ -126,18 +126,22 @@ int main(int arg, const char* argv[]) {
     std::cout << "Now parsing file: " << argv[2] << std::endl;
     Album* album = csvToString(argv[2]);
 
-    char response;
-    std::cout << "Is this data correct?[y/n]" << std::endl;
-    std::cin >> response;
-    if(response=='y'){
-      std::cout << "OK" << std::endl;
-      //Now convert files to MP3
-      toMp3(album, videoFile.c_str());
 
-    }else if(response=='n'){
-      std::cout << "Fix any issues with the CSV file or contact maintainer if you believe something went wrong" << std::endl;
-      return 0;
+    char response = 'g';
+    while(response != 'y' || response !='n'){
+      std::cout << "Is this data correct?[y/n]" << std::endl;
+      std::cin >> response;
+      if(response=='y'){
+        std::cout << "OK" << std::endl;
+        //Now convert files to MP3
+        toMp3(album, videoFile.c_str());
+        
+      }else if(response=='n'){
+        std::cout << "Fix any issues with the CSV file or contact maintainer if you believe something went wrong" << std::endl;
+        return 0;
+      }  
     }
+    
      }catch(DependencyException& e){
     std::cout << e.what() << std::endl;
   }catch(ArgException& e){
