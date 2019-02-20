@@ -18,8 +18,10 @@
   Please note this is writen and tested using c++ 11 on Manjaro Linux. It should run fine on most Unix-like OS but may have issues compiling on Windows.
 
 Ensure you also have the following installed:
+#+begin_src org
 -FFmpeg
 -Youtube-dl
+#+end_src
 ** To Compile
   #+begin_src sh
   g++ -std=c++11 -o vidcutter main.cpp
