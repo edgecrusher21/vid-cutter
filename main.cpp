@@ -133,13 +133,13 @@ int main(int arg, const char* argv[]) {
       std::cin >> response;
       if(response=='y'){
         std::cout << "OK" << std::endl;
-        //Now convert files to MP3
-        toMp3(album, videoFile.c_str());
-        
       }else if(response=='n'){
         std::cout << "Fix any issues with the CSV file or contact maintainer if you believe something went wrong" << std::endl;
         return 0;
-      }  
+      }
+      //Now convert files to MP3
+      toMp3(album, videoFile.c_str());
+
     }
     
      }catch(DependencyException& e){

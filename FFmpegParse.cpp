@@ -26,7 +26,7 @@ void convertToMp3(const char * videoFile, std::string artist, std::string albumN
     command.append("\" -metadata year=\"");
     command.append(year);
     command.append("\" ");
-    command.append("\" ");
+    command.append("\"");
     command.append(artist);
     command.append(" - ");
     command.append(song->getSongName());

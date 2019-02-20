@@ -26,10 +26,19 @@ private:
 
 };
 
+  
 //Return true if song added successfully
 bool Album::addTrack(Song* song){
-  trackList.push(song);
-  return true;
+  if(trackList.empty()){
+    song->setTrack(1);
+    trackList.push(song);
+    return true;
+  }else{
+    int prevTrack = trackList.front()->getTrack();
+    song->setTrack(prevTrack+1);
+    trackList.push(song);
+    return true;
+  }
 }
 
 Song* Album::getTrack(){
