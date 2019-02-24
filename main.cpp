@@ -128,7 +128,7 @@ int main(int arg, const char* argv[]) {
 
     //typical y/n prompt, make sure a clear answer is given
     char response = 'g';
-    while(response != 'y' || response !='n'){
+    while(response != 'y'){
       std::cout << "Is this data correct?[y/n]" << std::endl;
       std::cin >> response;
       if(response=='y'){

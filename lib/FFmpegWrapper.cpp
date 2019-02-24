@@ -36,7 +36,7 @@ namespace ffmpeg {
 
   const std::string duration(const std::string& startTime, const std::string& endTime){
     std::string str(" -ss ");
-    if(endTime.empty() || str.find_first_not_of(' ') != std::string::npos)//check if string is empty or just spaces
+    if(endTime.empty() || str.find(":") != std::string::npos)//check if string is empty or just spaces
       return str.append(startTime); 
     else
       return str.append(startTime).append(" -to ").append(endTime);

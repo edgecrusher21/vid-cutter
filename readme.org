@@ -15,7 +15,7 @@
 
   All values starting with _ _LIKE_THIS must be in the first column of the row, otherwise you may have issues with corresponding metadata being added. " " should be added when specified, especially if the value requires a comma. Don't worry about spacing after a "," seperator, they will not appear within the metadata so no worries with making your file look pretty inside your favourite text editor.
 * Running vid-cutter
-  Please note this is writen and tested using c++ 11 on Manjaro Linux. It should run fine on most Unix-like OS but may have issues compiling on Windows.
+  Please note this is writen and tested using c++ 17(previously 11) on Manjaro Linux. It should run fine on most Unix-like OS but may have issues compiling on Windows.
 
 Ensure you also have the following installed:
 #+begin_src org
@@ -24,7 +24,7 @@ Ensure you also have the following installed:
 #+end_src
 ** To Compile
   #+begin_src sh
-  g++ -std=c++11 -o vidcutter main.cpp
+  g++ -std=c++17 -o vidcutter main.cpp -lstdc++fs
 #+end_src
 ** To Run
 #+begin_src sh
