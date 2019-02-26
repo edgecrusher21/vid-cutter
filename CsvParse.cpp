@@ -6,8 +6,17 @@
 //#include "Splice.cpp"
 //#include "Song.cpp"
 #include "Album.cpp"
-
-//Function used to clean strings to remove any spaces or quotation marks
+/*
+  ...
+  /// Function used to remove "", tabs and spaces from a string extracted from
+  /// a CSV file. Unwated tabs and spaces used for asesthetic purposes of a csv
+  /// file are removed without removing wanted spaces within the value
+  /// This should be used before storing the value to an object to be processed
+  /// by the program to avoid errors or bad formatting of values.
+  /// @param A reference of the string to be "cleaned"
+  /// @return The string value without unwanted "", tabs and spaces
+  ...
+*/
 std::string stringFix(std::string& str){
   int i = 0;
   while(str.at(i)==' '){
@@ -28,7 +37,16 @@ std::string stringFix(std::string& str){
   }
   return str;
 }
-//TODO: Change from void to return Album object
+/*
+  ...
+  /// Function used to take a CSV file, add values to an object (in this case, an Album object for now)
+  /// then return the final object.
+  ///
+  /// @param csv file to be processed
+  /// @return Album object with a queue full of song objects
+  ...
+*/
+
 Album* csvToString(const char* fileName){
 
   std::string albumName = "album_name";

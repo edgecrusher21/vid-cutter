@@ -48,6 +48,7 @@ namespace youtubedl{
     youtubeURL = url;
 
     //generate filename
+    //TODO: Process youtu.be urls
     outputFile = youtubeURL.substr((youtubeURL.find_first_of("?v=")+3), youtubeURL.length());
     outputFile.append(".").append(format);
     if(fileExists(outputFile.c_str()))

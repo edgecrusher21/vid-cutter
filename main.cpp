@@ -7,34 +7,20 @@
 #include <array>
 #include <sys/stat.h>
 
+#include "lib/YoutubedlWrapper.cpp"
 #include "CsvParse.cpp"
 #include "FFmpegParse.cpp"
 #include "Exceptions.cpp"
 //Constants
-
-
-//I use a lot of commands, so it makes sense to have a dedicated function for
-//capturing standard output
-//Taken from: https://www.jeremymorgan.com/tutorials/c-programming/how-to-capture-the-output-of-a-linux-command-in-c/
-
-const char* GetStdoutFromCommand(std::string cmd) {
-
-  std::string data;
-  FILE * stream;
-  const int max_buffer = 256;
-  char buffer[max_buffer];
-  cmd.append(" 2>&1");
-
-  stream = popen(cmd.c_str(), "r");
-  if (stream) {
-    while (!feof(stream))
-      if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
-    pclose(stream);
-  }
-  return data.c_str();
-}
-
-//Once working with FFmpeg, switch over to GStreamer
+/*
+  ...
+  /// Checks to see if a program exists using a shell command "which"
+  /// Such command sees outputs the location of program. If the location
+  /// doesn't exist, it should return no value
+  /// @param the program as expected to be entered in a shell
+  /// @return true if exists, else return false if it doesn't
+  ...
+*/
 bool checkDeps(const char prog[]){
   //std::ifstream infile(ffmpegLocation.c_str());
   //std::string command = strcat("which ",prog," > /dev/null 2>&1"); 
@@ -48,42 +34,16 @@ bool checkDeps(const char prog[]){
     return true;
   }
 }
-
-std::string downloadVideo(const char* url, const char* format){
-  //Extracting youtube-id from URL
-  //TODO: Allow proccessing for youtu.be URLs
-  std::string id(url);
-  id = id.substr((id.find_first_of("?v=") + 3), id.length());
-  std::cout << "ID: " << id.c_str() << std::endl;
-
-  //Generate file name
-  std::string fileName(id.c_str());
-  fileName.append(".");
-  fileName.append(format);
-
-  //Check to see if file exists
-  struct stat buffer;
-  if(stat(fileName.c_str(), &buffer) ==0)
-    return fileName;
-  //Youtube-dl command
-  std::string command = "youtube-dl -f ";
-  command.append(format);
-  command.append(" ");
-  command.append(url);
-  command.append(" -o '%(id)s.%(ext)s'");
-
-  std::cout << "Now downloading video" << std::endl
-            << "File format: " << format << std::endl;
-
-  std::string ytdlOutput = GetStdoutFromCommand(command);
-  std::cout << ytdlOutput << std::endl;
-  if(ytdlOutput.find("[download] Destination:") != std::string::npos){
-    std:: cout << "Download finished" << std::endl;
-    return fileName;
-  }else{
-    return "Failed";
-  }
-}
+/*
+  ...
+  /// main method to initialize program. Main method should be focused
+  /// on directing shell arguments, running the appropriate functions
+  /// and exception handling. Everything else should be within their own files
+  /// 
+  /// @param arguments provided by the shell
+  /// @return exit status code when finished with program or if errors found
+  ...
+*/
 
 int main(int arg, const char* argv[]) {
   printf("Starting vid cutter \n");
@@ -110,23 +70,23 @@ int main(int arg, const char* argv[]) {
 
     if(argv[2] == NULL)
       throw ArgException("Please enter in a valid file");
+    //TODO: More error checking with files
     
-    std::regex rx (".*\\..*");
-
-    if(argv[1] == NULL)
-      throw ArgException("Please enter in a valid youtube URL");
-    else if(!std::regex_match(argv[1], rx))
-      throw ArgException("URL entered is not a valid url");
-
-    //for now, we'll just use webm for convenience sakes
-    std::string videoFile = downloadVideo(argv[1], "mp4");
-    std::cout << videoFile << std::endl;
+ 
+      if(!youtubedl::validUrl(argv[1]))
+        throw ArgException("Please enter in a valid youtube URL");
+      
+      //for now, we'll just use webm for convenience sakes
+      std::string videoFile = (youtubedl::downloadVideo(argv[1], "mp4"))?youtubedl::outputFile:"NULL";
+      std::cout << "Video file processed: " << videoFile << std::endl;
+     
 
     //Now creating album object to store csv file data
     std::cout << "Now parsing file: " << argv[2] << std::endl;
     Album* album = csvToString(argv[2]);
 
     //typical y/n prompt, make sure a clear answer is given
+    //exit program if 'n' is given
     char response = 'g';
     while(response != 'y'){
       std::cout << "Is this data correct?[y/n]" << std::endl;
@@ -142,7 +102,7 @@ int main(int arg, const char* argv[]) {
 
     }
     
-     }catch(DependencyException& e){
+  }catch(DependencyException& e){
     std::cout << e.what() << std::endl;
   }catch(ArgException& e){
     std::cout << " ERROR IN ARGUMENTS: " << e.what() << std::endl;
@@ -150,9 +110,6 @@ int main(int arg, const char* argv[]) {
     std::cout << "Something went wrong. Please contact maintainer" << std::endl;
     std::cout << e.what() << std::endl;
   }
-
-
-  
   return 0;
 }
 
