@@ -4,6 +4,7 @@
 class Album {
 public:
   Album(const std::string& an, const std::string& artN, const std::string& y) : albumName(an), artistName(artN), year(y){};
+  ~Album();
 
   //Getters and Setters
   const std::string getAlbumName(){ return albumName;}
@@ -70,3 +71,6 @@ void Album::listTrack(){
 bool Album::isTrackListEmpty(){
   return trackList.empty();
   }
+Album::~Album(){
+  
+}
