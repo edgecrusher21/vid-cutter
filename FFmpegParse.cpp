@@ -19,7 +19,17 @@ void convertToMp3(const char * videoFile, std::string artist, std::string albumN
    md.insert(std::pair<std::string, std::string>("year",year));
    md.insert(std::pair<std::string, std::string>("album",albumName));
    md.insert(std::pair<std::string, std::string>("track",std::to_string(song->getTrack())));
-   std::string command = ffmpeg::ffmpegValues(videoFile, artist.insert(0, directory).append(" - ").append(song->getSongName()).append(".mp3"),
+   //This is a quick fix to ensure /'s aren't interpreted by ffmpeg as directories
+   //TODO: Make this a generic fix for any string
+   std::string songNameFix = song->getSongName();
+   for(std::string::size_type i=0;i<songNameFix.size();i++){
+     if(songNameFix.at(i) == '/'){
+       songNameFix[i] = ' ';
+       i++;
+       std::cout << songNameFix << std::endl;
+     }
+   }
+   std::string command = ffmpeg::ffmpegValues(videoFile, artist.insert(0, directory).append(" - ").append(songNameFix).append(".mp3"),
                                               "mp3", song->getStartTime(), song->getEndTime(), md);
     std::cout << "Now parsing command: " << command << std::endl;
     std::cout << "Now converting: " << song->getSongName() << std::endl;

@@ -11,19 +11,22 @@ namespace ffmpeg {
   const std::string DOUBLEQUOTES("\""); //This is annoying to type out
 
 
-  std::string metadata(const std::string& tag, const std::string& value){
+  std::string metadata(const std::string& tag, std::string& value){ 
+
+   
     std::string metadata(METADATA);
     metadata.append(tag).append("=").append(DOUBLEQUOTES).append(value).append(DOUBLEQUOTES);
     return metadata;
   }
 
-  std::string metadata(const std::string& tag, int value){
+  template <class T>
+  std::string metadata(const std::string& tag, T value){
     std::string metadata(METADATA);
     metadata.append(tag).append("=").append(DOUBLEQUOTES).append(std::to_string(value)).append(DOUBLEQUOTES);
     return metadata;
   }
 
-  std::string mp3(const std::string& ab, const std::string ar){
+  std::string mp3(const std::string& ab, const std::string& ar){
     std::string str(" -vn ");
     return str.append("-ab ").append(ab).append("k").append(" -ar ")
       .append(ar);
