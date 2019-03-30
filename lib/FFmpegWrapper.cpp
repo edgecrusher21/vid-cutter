@@ -11,7 +11,7 @@ const std::string NULL_STRING(
 const std::string METADATA(" -metadata ");
 const std::string DOUBLEQUOTES("\""); // This is annoying to type out
 
-std::string metadata(const std::string &tag, std::string &value) {
+std::string metadata(const std::string &tag, const std::string &value) {
 
   std::string metadata(METADATA);
   metadata.append(tag)
