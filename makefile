@@ -1,2 +1,4 @@
+CC=g++
+CFLAGS = -Wall -Wpedantic -Wextra -lstdc++fs
 vidCutter: main.cpp
-	g++ -std=c++17 -o vidCutter main.cpp -Wall -Wpedantic -Wextra -lstdc++fs
+	$(CC) -std=c++17 -o vidCutter main.cpp $(CFLAGS)

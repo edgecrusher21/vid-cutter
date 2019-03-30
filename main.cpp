@@ -45,10 +45,18 @@ bool checkDeps(const char prog[]) {
   ...
 */
 
+//TBC - interactive w/out the need for a csv file
+/*bool interactive() {
+
+  return false;
+}
+*/
+
 int main(int arg, const char *argv[]) {
   printf("Starting vid cutter \n");
   try {
-    if(arg == 0){
+    std::cout << arg << std::endl;
+    if (arg <= 1) {
       std::cout << "Please enter the correct arguments";
       return 0;
     }
@@ -108,10 +116,11 @@ int main(int arg, const char *argv[]) {
     }
 
   } catch (DependencyException &e) {
+
     std::cout << e.what() << std::endl;
   } catch (ArgException &e) {
     std::cout << " ERROR IN ARGUMENTS: " << e.what() << std::endl;
-  } catch (std::exception &e) {
+  } catch (std::runtime_error &e) {
     std::cout << "Something went wrong. Please contact maintainer" << std::endl;
     std::cout << e.what() << std::endl;
   }

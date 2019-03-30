@@ -24,7 +24,7 @@ Ensure you also have the following installed:
 #+end_src
 ** To Compile
   #+begin_src sh
-  g++ -std=c++17 -o vidcutter main.cpp -lstdc++fs
+  make
 #+end_src
 ** To Run
 #+begin_src sh
