@@ -1,17 +1,17 @@
-#include <iostream>
-#include <unistd.h>
-#include <regex>
-#include <cstdio>
-#include <memory>
-#include <string>
 #include <array>
+#include <cstdio>
+#include <iostream>
+#include <memory>
+#include <regex>
+#include <string>
 #include <sys/stat.h>
+#include <unistd.h>
 
-#include "lib/YoutubedlWrapper.cpp"
 #include "CsvParse.cpp"
-#include "FFmpegParse.cpp"
 #include "Exceptions.cpp"
-//Constants
+#include "FFmpegParse.cpp"
+#include "lib/YoutubedlWrapper.cpp"
+// Constants
 /*
   ...
   /// Checks to see if a program exists using a shell command "which"
@@ -21,16 +21,16 @@
   /// @return true if exists, else return false if it doesn't
   ...
 */
-bool checkDeps(const char prog[]){
-  //std::ifstream infile(ffmpegLocation.c_str());
-  //std::string command = strcat("which ",prog," > /dev/null 2>&1"); 
+bool checkDeps(const char prog[]) {
+  // std::ifstream infile(ffmpegLocation.c_str());
+  // std::string command = strcat("which ",prog," > /dev/null 2>&1");
   std::string command = "which ";
   command.append(prog);
   command.append(" > /dev/null 2>&1");
-  //std::cout << command << std::endl;
-  if(!system(command.c_str())){
+  // std::cout << command << std::endl;
+  if (!system(command.c_str())) {
     return false;
-  }else{
+  } else {
     return true;
   }
 }
@@ -39,78 +39,77 @@ bool checkDeps(const char prog[]){
   /// main method to initialize program. Main method should be focused
   /// on directing shell arguments, running the appropriate functions
   /// and exception handling. Everything else should be within their own files
-  /// 
+  ///
   /// @param arguments provided by the shell
   /// @return exit status code when finished with program or if errors found
   ...
 */
 
-int main(int arg, const char* argv[]) {
+int main(int arg, const char *argv[]) {
   printf("Starting vid cutter \n");
   try {
-    //First, lets check to see if depdencies are met
-    //this is just some quick and dirty crap, I'll think
-    //of something more elegant later on.
-    int flag = 0;// 1=ffmpeg not found;2=youtube-dl not found;3=both not found
-    checkDeps("ffmpeg")?flag+=1 : flag = 0 ;
-     checkDeps("youtube-dl")?flag+=2 : flag = flag ;
-    switch(flag){
-    case 1 :
+    // First, lets check to see if depdencies are met
+    // this is just some quick and dirty crap, I'll think
+    // of something more elegant later on.
+    int flag = 0; // 1=ffmpeg not found;2=youtube-dl not found;3=both not found
+    checkDeps("ffmpeg") ? flag += 1 : flag = 0;
+    checkDeps("youtube-dl") ? flag += 2 : flag = flag;
+    switch (flag) {
+    case 1:
       throw DependencyException("ffmpeg");
       break;
-    case 2 :
+    case 2:
       throw DependencyException("youtube-dl");
       break;
-    case 3 :
+    case 3:
       throw DependencyException("ffmpeg, youtube-dl");
       break;
 
-      //Now lets check files
+      // Now lets check files
     }
 
-    if(argv[2] == NULL)
+    if (argv[2] == NULL)
       throw ArgException("Please enter in a valid file");
-    //TODO: More error checking with files
-    
- 
-      if(!youtubedl::validUrl(argv[1]))
-        throw ArgException("Please enter in a valid youtube URL");
-      
-      //for now, we'll just use webm for convenience sakes
-      std::string videoFile = (youtubedl::downloadVideo(argv[1], "mp4"))?youtubedl::outputFile:"NULL";
-      std::cout << "Video file processed: " << videoFile << std::endl;
-     
+    // TODO: More error checking with files
 
-    //Now creating album object to store csv file data
+    if (!youtubedl::validUrl(argv[1]))
+      throw ArgException("Please enter in a valid youtube URL");
+
+    // for now, we'll just use webm for convenience sakes
+    std::string videoFile = (youtubedl::downloadVideo(argv[1], "mp4"))
+                                ? youtubedl::outputFile
+                                : "NULL";
+    std::cout << "Video file processed: " << videoFile << std::endl;
+
+    // Now creating album object to store csv file data
     std::cout << "Now parsing file: " << argv[2] << std::endl;
-    Album* album = csvToString(argv[2]);
+    Album *album = csvToString(argv[2]);
 
-    //typical y/n prompt, make sure a clear answer is given
-    //exit program if 'n' is given
+    // typical y/n prompt, make sure a clear answer is given
+    // exit program if 'n' is given
     char response = 'g';
-    while(response != 'y'){
+    while (response != 'y') {
       std::cout << "Is this data correct?[y/n]" << std::endl;
       std::cin >> response;
-      if(response=='y'){
+      if (response == 'y') {
         std::cout << "OK" << std::endl;
-      }else if(response=='n'){
-        std::cout << "Fix any issues with the CSV file or contact maintainer if you believe something went wrong" << std::endl;
+      } else if (response == 'n') {
+        std::cout << "Fix any issues with the CSV file or contact maintainer "
+                     "if you believe something went wrong"
+                  << std::endl;
         return 0;
       }
-      //Now convert files to MP3
+      // Now convert files to MP3
       toMp3(album, videoFile.c_str());
-
     }
-    
-  }catch(DependencyException& e){
+
+  } catch (DependencyException &e) {
     std::cout << e.what() << std::endl;
-  }catch(ArgException& e){
+  } catch (ArgException &e) {
     std::cout << " ERROR IN ARGUMENTS: " << e.what() << std::endl;
-  }catch(std::exception& e){
+  } catch (std::exception &e) {
     std::cout << "Something went wrong. Please contact maintainer" << std::endl;
     std::cout << e.what() << std::endl;
   }
   return 0;
 }
-
- 

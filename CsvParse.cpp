@@ -85,7 +85,7 @@ Album* csvToString(const char* fileName){
         //std::cout << "Year: " << year << std::endl;
         
       }else{
-        std::string songName = "SongName"; 
+        std::string songName = "SongName";
         int track = -1;
         std::string startTime = "00:00";
         std::string endTime = "00:00";
