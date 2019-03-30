@@ -13,6 +13,6 @@ public:
 private:
   std::string songName;
 };
-const std::string Song::getSongName() { return songName; };
-void Song::setSongName(const std::string &sn) { songName = sn; };
+const std::string Song::getSongName() { return songName; }
+void Song::setSongName(const std::string &sn) { songName = sn; }
 Song::~Song() {}
