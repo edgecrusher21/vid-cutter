@@ -48,6 +48,10 @@ bool checkDeps(const char prog[]) {
 int main(int arg, const char *argv[]) {
   printf("Starting vid cutter \n");
   try {
+    if(arg == 0){
+      std::cout << "Please enter the correct arguments";
+      return 0;
+    }
     // First, lets check to see if depdencies are met
     // this is just some quick and dirty crap, I'll think
     // of something more elegant later on.
