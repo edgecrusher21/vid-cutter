@@ -1,11 +1,4 @@
-#include <stdio.h>
-#include <cstring>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-//#include "Splice.cpp"
-//#include "Song.cpp"
-#include "Album.cpp"
+#include "CsvParse.hpp"
 /*
   ...
   /// Function used to remove "", tabs and spaces from a string extracted from

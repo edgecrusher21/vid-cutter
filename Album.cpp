@@ -1,31 +1,14 @@
-#include "Song.cpp"
-#include <queue>
-#include <stdio.h>
-class Album {
-public:
-  Album(const std::string &an, const std::string &artN, const std::string &y)
-      : albumName(an), artistName(artN), year(y){};
-  ~Album();
+#include "Album.hpp"
 
-  // Getters and Setters
-  const std::string getAlbumName() { return albumName; }
-  void setAlbumName(const std::string &an) { albumName = an; }
-  const std::string getArtistName() { return artistName; }
-  void setArtistName(const std::string &artN) { artistName = artN; }
-  const std::string getYear() { return year; }
-  void setYear(const std::string &y) { year = y; }
+//Getters and Setters
+const std::string Album::getAlbumName() { return albumName; }
 
-  bool addTrack(Song *song);
-  Song *getTrack();
-  void listTrack();
-  bool isTrackListEmpty();
+void Album::setAlbumName(const std::string &an) { albumName = an; }
+const std::string Album::getArtistName() { return artistName; }
+void Album::setArtistName(const std::string &artN) { artistName = artN; }
+const std::string Album::getYear() { return year; }
+void Album::setYear(const std::string &y) { year = y; }
 
-private:
-  std::string albumName;
-  std::string artistName;
-  std::string year; // Store year as ($YEAR)
-  std::queue<Song *> trackList;
-};
 
 // Return true if song added successfully
 bool Album::addTrack(Song *song) {

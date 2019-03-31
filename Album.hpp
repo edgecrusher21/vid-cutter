@@ -1,3 +1,5 @@
+#ifndef ALBUM_HPP
+#define ALBUM_HPP
 #include "Song.hpp"
 #include <queue>
 #include <stdio.h>
@@ -27,3 +29,4 @@ private:
   std::string year; // Store year as ($YEAR)
   std::queue<Song *> trackList;
 };
+#endif

@@ -1,18 +1,9 @@
-//#include "CsvParse.cpp"
-#include "lib/FFmpegWrapper.cpp"
-#include <bits/stdc++.h>
-#include <cstdlib>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include "FFmpegParse.hpp"
 namespace fs = std::filesystem;
-std::string directory;
 
-void convertToMp3(const char *videoFile, std::string artist,
-                  std::string albumName, std::string year, Song *song) {
+void convertToMp3(const std::string &directory, const char *videoFile,
+                  std::string artist, std::string albumName, std::string year,
+                  Song *song) {
 
   std::map<std::string, std::string> md;
   md.insert(std::pair<std::string, std::string>("artist", artist));
@@ -50,6 +41,7 @@ void convertToMp3(const char *videoFile, std::string artist,
 }
 
 void toMp3(Album *album, const char *videoFile) {
+  std::string directory;
   // Create directories for files
   directory.append(album->getArtistName());
   directory.append("/").append(album->getAlbumName()).append("/");
@@ -69,7 +61,7 @@ void toMp3(Album *album, const char *videoFile) {
     std::cout << "Song Name: " << song->getSongName()
               << " Start Time: " << song->getStartTime()
               << " End Time: " << song->getEndTime() << std::endl;
-    convertToMp3(videoFile, artist, albumName, year, song);
+    convertToMp3(directory, videoFile, artist, albumName, year, song);
   }
 }
 

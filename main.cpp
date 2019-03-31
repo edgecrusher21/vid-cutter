@@ -1,3 +1,8 @@
+#include "CsvParse.hpp"
+#include "FFmpegParse.hpp"
+#include "Exceptions.cpp"
+#include "lib/YoutubedlWrapper.hpp"
+
 #include <array>
 #include <cstdio>
 #include <iostream>
@@ -7,10 +12,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "CsvParse.cpp"
-#include "Exceptions.cpp"
-#include "FFmpegParse.cpp"
-#include "lib/YoutubedlWrapper.cpp"
 // Constants
 /*
   ...
@@ -45,7 +46,7 @@ bool checkDeps(const char prog[]) {
   ...
 */
 
-//TBC - interactive w/out the need for a csv file
+// TBC - interactive w/out the need for a csv file
 /*bool interactive() {
 
   return false;
@@ -87,11 +88,14 @@ int main(int arg, const char *argv[]) {
     if (!youtubedl::validUrl(argv[1]))
       throw ArgException("Please enter in a valid youtube URL");
 
-    // for now, we'll just use webm for convenience sakes
-    std::string videoFile = (youtubedl::downloadVideo(argv[1], "mp4"))
-                                ? youtubedl::outputFile
-                                : "NULL";
-    std::cout << "Video file processed: " << videoFile << std::endl;
+    // for now, we'll just use mp4 for convenience sakes
+    std::string _NULL = "NULL";
+    std::string videoFile = youtubedl::downloadVideo(argv[1], "mp4");
+    if(videoFile == "NULL"){
+      throw std::runtime_error("Video processing failed");
+    }else{
+      std::cout << "Video file processed: " << videoFile << std::endl;
+    }// This feels dodgy on this end
 
     // Now creating album object to store csv file data
     std::cout << "Now parsing file: " << argv[2] << std::endl;
@@ -111,10 +115,10 @@ int main(int arg, const char *argv[]) {
                   << std::endl;
         return 0;
       }
-      // Now convert files to MP3
-      toMp3(album, videoFile.c_str());
     }
 
+    // Now convert files to MP3
+    toMp3(album, videoFile.c_str());
   } catch (DependencyException &e) {
 
     std::cout << e.what() << std::endl;

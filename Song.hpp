@@ -1,3 +1,5 @@
+#ifndef SONG_HPP
+#define SONG_HPP
 #include "Splice.hpp"
 #include <iostream>
 class Song : public Splice {
@@ -12,3 +14,4 @@ public:
 private:
   std::string songName;
 };
+#endif

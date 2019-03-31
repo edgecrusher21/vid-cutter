@@ -1,15 +1,8 @@
-#include <iostream>
-#include <map>
-#include <stdio.h>
-#include <string.h>
+#include "FFmpegWrapper.hpp"
+
 
 namespace ffmpeg {
 // Wrapper library for FFmpeg (aka dodgy terminal line generator)
-
-const std::string NULL_STRING(
-    "_NULL"); // this will be a value I will use to declare a string I want null
-const std::string METADATA(" -metadata ");
-const std::string DOUBLEQUOTES("\""); // This is annoying to type out
 
 std::string metadata(const std::string &tag, const std::string &value) {
 
