@@ -43,7 +43,7 @@ with file saved as "aha.csv"..
 #+end_src
 We can now save with a single song. This is useful to cut silence, unwanted sounds and unrelated intros or outros.
 * Running vid-cutter
-  Please note this is writen and tested using c++ 17(previously 11) on Manjaro Linux. It should run fine on most Unix-like OS but may have issues compiling on Windows.
+  Please note this is writen and tested using c++ 17(previously 11), gcc 8.2.1 and on Manjaro Linux. It should run fine on most Unix-like OS but may have issues compiling on Windows.
 
 Ensure you also have the following installed:
 #+begin_src org
