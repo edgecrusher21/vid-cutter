@@ -11,6 +11,7 @@
 #include <map>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <filesystem>
 namespace fs = std::filesystem;
 
 void convertToMp3(const std::string &directory, const char *videoFile,

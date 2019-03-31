@@ -45,8 +45,14 @@ void toMp3(Album *album, const char *videoFile) {
   // Create directories for files
   directory.append(album->getArtistName());
   directory.append("/").append(album->getAlbumName()).append("/");
-  if (fs::create_directories(directory.c_str()) ||
-      fs::exists(directory.c_str())) {
+
+  if (fs::exists(directory.c_str())) {
+    std::cout << "Directories already exists" << std::endl;
+  } else {
+    fs::create_directory(album->getArtistName());
+    fs::create_directory(directory.c_str());
+  }
+  if (fs::exists(directory.c_str())) {
     std::cout << "Directory successfully created: " << directory << std::endl;
   } else {
     throw std::runtime_error(std::string("Creating directory has failed."));

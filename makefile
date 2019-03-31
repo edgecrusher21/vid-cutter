@@ -9,4 +9,5 @@ vidCutter:
 clean:
 	@echo "Cleaning up.."
 	rm *.o
-	rm lib/*.o
+	#rm lib/*.o
+	rm vidCutter

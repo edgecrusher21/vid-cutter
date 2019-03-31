@@ -61,7 +61,7 @@ Album* csvToString(const char* fileName){
           iss >> albumName;
         albumName = stringFix(albumName);
         album->setAlbumName(albumName);
-        //std::cout << "Album Name: " << albumName << std::endl;
+        std::cout << "Album Name: " << albumName << std::endl;
       }else if(value.compare("_ARTIST_NAME") == 0){
         while(std::getline(iss, artistName, ','))
           iss >> artistName;
@@ -90,8 +90,8 @@ Album* csvToString(const char* fileName){
         stringFix(songName);
         stringFix(startTime);
         stringFix(endTime);
-        //std::cout << "Song Name: " << songName << " Start Time: " << startTime << " End Time: " << endTime
-        //           << std::endl;
+        std::cout << "Song Name: " << songName << " Start Time: " << startTime << " End Time: " << endTime
+                   << std::endl;
         
         Song* song = new Song(songName, track, startTime, endTime);
         album->addTrack(song);

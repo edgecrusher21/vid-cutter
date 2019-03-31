@@ -14,6 +14,34 @@
 #+end_src
 
   All values starting with _ _LIKE_THIS must be in the first column of the row, otherwise you may have issues with corresponding metadata being added. " " should be added when specified, especially if the value requires a comma. Don't worry about spacing after a "," seperator, they will not appear within the metadata so no worries with making your file look pretty inside your favourite text editor.
+* Examples
+#+begin_src
+"Enter Sandman", 0:59, 6:24
+"Fade to Black", 14:14, 21:45
+"Creeping Death", 6:24, 14:14
+_ARTIST_NAME, "Metallica"
+_ALBUM_NAME, "Monsters of Rock"
+_YEAR, 1991
+
+#+end_src
+Now save csv file (for this example, metallica-moscow.csv) then run the program with the youtube url + csv file given as arguments
+#+begin_src
+./vidCutter https://www.youtube.com/watch\?v\=eng4OTDqtoM metallica-moscow.csv
+#+end_src
+Note how you can partially rip from a video
+
+Another example, with just a single song
+#+begin_src
+"Take On Me", 0:02, 3:40
+_ARTIST_NAME, "a-ha"
+_ALBUM_NAME, "Hunting High and Low"
+_YEAR, 1985
+#+end_src
+with file saved as "aha.csv"..
+#+begin_src
+./vidCutter https://www.youtube.com/watch\?v\=djV11Xbc914 aha.csv
+#+end_src
+We can now save with a single song. This is useful to cut silence, unwanted sounds and unrelated intros or outros.
 * Running vid-cutter
   Please note this is writen and tested using c++ 17(previously 11) on Manjaro Linux. It should run fine on most Unix-like OS but may have issues compiling on Windows.
 

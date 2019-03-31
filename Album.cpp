@@ -17,7 +17,7 @@ bool Album::addTrack(Song *song) {
     trackList.push(song);
     return true;
   } else {
-    int prevTrack = trackList.front()->getTrack();
+    int prevTrack = trackList.back()->getTrack();
     song->setTrack(prevTrack + 1);
     trackList.push(song);
     return true;
