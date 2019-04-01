@@ -15,6 +15,27 @@
 
   All values starting with _ _LIKE_THIS must be in the first column of the row, otherwise you may have issues with corresponding metadata being added. " " should be added when specified, especially if the value requires a comma. Don't worry about spacing after a "," seperator, they will not appear within the metadata so no worries with making your file look pretty inside your favourite text editor.
 * Examples
+
+#+begin_src
+"To Defy The Laws Of Tradition", 00:00, 05:53
+"To Defy The Laws Of Tradition (Continued)", 05:53, 08:09
+"Here Come The Bastards", 08:09, 14:35
+"Those Damned Blue-Collar Tweekers / Bob", 14:35, 27:09
+"My Name Is Mud", 27:09, 31:40
+"Jerry Was A Race Car Driver", 31:40, 35:20
+"The Air Is Getting Slippery", 35:20, 39:26
+"Nature Boy", 39:26, 47:53
+"Harold Of The Rocks", 47:53, 58:26
+"Harold Of The Rocks (Continued)", 0:58:26, 1:00:47
+_ARTIST_NAME, "Primus"
+_ALBUM_NAME, "Live at Woodstock 94"
+_YEAR, 1994
+#+end_src
+Here, I save this as primus-woodstock94.csv, then I pass the corresponding youtube url + csv file to the vidCutter program as arguments
+#+begin_src
+./vidCutter https://www.youtube.com/watch\?v\=v-HUK8qR9QA primus-woodstock94.csv
+#+end_src
+The program will download the youtube video, process the csv file then confirm if the data shown properly. It will then proceed to add given metadata to each splice then output as an mp3 file. The files should be saved to a folduer structure as $(artistName)/$(albumName) 
 #+begin_src
 "Enter Sandman", 0:59, 6:24
 "Fade to Black", 14:14, 21:45
